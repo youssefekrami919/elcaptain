@@ -24,8 +24,10 @@ html, body, [class*="css"] {
     margin-top: 10px;
 }
 
-[data-testid="stSidebar"] .stButton button {
+[data-testid="stSidebar"] .stButton button,
+[data-testid="stSidebar"] [data-testid="stButton"] > button {
     width: 100%;
+    min-width: 100% !important;
     height: 48px;
     padding: 0 12px;
     transition-duration: 0.2s;
@@ -36,11 +38,13 @@ html, body, [class*="css"] {
     font-weight: 600 !important;
 }
 
-[data-testid="stSidebar"] .stButton {
+[data-testid="stSidebar"] .stButton,
+[data-testid="stSidebar"] [data-testid="stButton"] {
     width: 100%;
 }
 
-[data-testid="stSidebar"] .stButton > button {
+[data-testid="stSidebar"] .stButton > button,
+[data-testid="stSidebar"] [data-testid="stButton"] > button {
     display: block;
 }
 
