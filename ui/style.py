@@ -26,6 +26,8 @@ html, body, [class*="css"] {
 
 [data-testid="stSidebar"] .stButton button {
     width: 100%;
+    height: 48px;
+    padding: 0 12px;
     transition-duration: 0.2s;
     background-color: white !important;
     color: #333 !important;
