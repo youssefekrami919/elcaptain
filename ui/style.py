@@ -36,6 +36,14 @@ html, body, [class*="css"] {
     font-weight: 600 !important;
 }
 
+[data-testid="stSidebar"] .stButton {
+    width: 100%;
+}
+
+[data-testid="stSidebar"] .stButton > button {
+    display: block;
+}
+
 [data-testid="stSidebar"] .stButton button:hover {
     transition-duration: 0.2s;
     background-color: white !important;
