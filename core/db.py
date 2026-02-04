@@ -14,9 +14,18 @@ def _load_graphdatabase():
     if not hasattr(neo4j_pkg, "GraphDatabase"):
         module_path = getattr(neo4j_pkg, "__file__", None)
         module_version = getattr(neo4j_pkg, "__version__", None)
+        try:
+            import os
+            import sys
+            shadow_paths = [
+                p for p in sys.path if os.path.isdir(os.path.join(p, "neo4j"))
+            ]
+        except Exception:
+            shadow_paths = []
         raise ImportError(
             "Neo4j package loaded but GraphDatabase is missing. "
-            f"module_path={module_path!r}, version={module_version!r}. "
+            f"module_path={module_path!r}, version={module_version!r}, "
+            f"shadow_paths={shadow_paths!r}. "
             "This often happens when a local folder named `neo4j` shadows the driver, "
             "or when Streamlit cached an old build. Clear cache and redeploy."
         )
