@@ -62,5 +62,5 @@ Also seeds branch `MAIN` and employee `EMP-ADMIN`.
 ---
 
 ## Cypher schema
-See `neo4j/schema.cypher` (constraints, indexes, node labels, relationships).
+See `db_migrations/schema.cypher` (constraints, indexes, node labels, relationships).
 The app applies these automatically at startup too.
