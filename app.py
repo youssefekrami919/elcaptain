@@ -1,12 +1,14 @@
 import streamlit as st
+from core.db import ensure_schema, seed_admin_if_empty, ensure_admin_account
+from core.services.auth_service import login
 from ui.style import STYLE
+from ui.pages import users_page, attendance_page, finance_page, workers_page, attendance_data_page
 
 st.set_page_config(page_title="ELCAPTAIN", page_icon="", layout="wide")
 st.markdown(STYLE, unsafe_allow_html=True)
 
 @st.cache_resource
 def init_db():
-    from core.db import ensure_schema, seed_admin_if_empty, ensure_admin_account
     ensure_schema()
     seed_admin_if_empty()
     ensure_admin_account()
@@ -23,8 +25,6 @@ def toggle_theme():
     st.rerun()
 
 def login_ui():
-    from core.services.auth_service import login
-
     st.markdown(
         """
         <style>
@@ -136,7 +136,7 @@ def sidebar(user: dict):
     with st.sidebar:
         c1, c2, c3 = st.columns([1, 2, 1])
         with c2:
-            st.image("barber_logo.png", width=150)
+            st.image(r"C:\Users\dell\Desktop\barber_logo.png", width=150)
         st.markdown('<div id="sidebar-title">ELCAPTAIN</div>', unsafe_allow_html=True)
 
         st.divider()
@@ -171,11 +171,9 @@ def main():
     try:
         init_db()
     except Exception as e:
-        st.error("Cannot connect to Neo4j. Check your Streamlit Secrets and ensure Neo4j is running.")
+        st.error("Cannot connect to Neo4j. Check your .env and ensure Neo4j is running.")
         st.code(str(e))
         st.stop()
-
-    from ui.pages import users_page, attendance_page, finance_page, workers_page, attendance_data_page
 
     user = st.session_state.get("user")
     if not user:
