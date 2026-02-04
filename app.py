@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from ui.style import STYLE
 
 st.set_page_config(page_title="ELCAPTAIN", page_icon="", layout="wide")
@@ -136,7 +137,8 @@ def sidebar(user: dict):
     with st.sidebar:
         c1, c2, c3 = st.columns([1, 2, 1])
         with c2:
-            st.image("barber_logo.png", width=150)
+            logo_path = os.path.join(os.path.dirname(__file__), "barber_logo.png")
+            st.image(logo_path, width=150)
         st.markdown('<div id="sidebar-title">ELCAPTAIN</div>', unsafe_allow_html=True)
 
         st.divider()
