@@ -1,5 +1,12 @@
 import os
-from dotenv import load_dotenv
+
+try:
+    from dotenv import load_dotenv
+except Exception:
+    # Optional in production environments like Streamlit Cloud
+    def load_dotenv(*_args, **_kwargs):
+        return False
+
 load_dotenv()
 
 NEO4J_URI = os.getenv("NEO4J_URI", "neo4j://localhost:7687")
