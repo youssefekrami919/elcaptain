@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from core.rbac import require_role
 from core.services.attendance_service import (
     ensure_daily_attendance,
@@ -38,7 +39,7 @@ def attendance_page(user: dict):
                     return hhmmss
             return text
 
-    now = datetime.now()
+    now = datetime.now(ZoneInfo("Africa/Cairo"))
     effective_date = get_effective_attendance_date(now)
     ensure_daily_attendance(now)
 
@@ -144,13 +145,14 @@ def finance_page(user: dict):
         st.info("No permission.")
         return
 
+    local_today = datetime.now(ZoneInfo("Africa/Cairo")).date()
     if is_owner or is_manager:
         st.markdown("### Add Entry")
         kind = st.selectbox("Type", ["Income", "Expense"])
         amount = st.number_input("Amount", min_value=0.01, value=100.0, step=10.0)
         desc = st.text_input("Description")
-        dt = st.date_input("Date", value=date.today(), key="finance_date")
-        tm = st.time_input("Time", value=datetime.now().time().replace(microsecond=0))
+        dt = st.date_input("Date", value=local_today, key="finance_date")
+        tm = st.time_input("Time", value=datetime.now(ZoneInfo("Africa/Cairo")).time().replace(microsecond=0))
         if st.button("Add", type="primary"):
             if not desc.strip():
                 st.error("Description is required.")
@@ -165,7 +167,7 @@ def finance_page(user: dict):
     st.markdown("---")
     st.markdown("### Records")
     with st.form("finance_filter"):
-        filter_date = st.date_input("Filter by date", value=date.today())
+        filter_date = st.date_input("Filter by date", value=local_today)
         filter_kind = st.selectbox("Filter type", ["All", "Income", "Expense"])
         submitted = st.form_submit_button("Apply Filter")
 
@@ -314,13 +316,14 @@ def attendance_data_page(user: dict):
     emp_options = ["All"] + [f"{e['emp_id']} - {e['full_name']}" for e in employees]
     emp_map = {f"{e['emp_id']} - {e['full_name']}": e["emp_id"] for e in employees}
 
+    local_today = datetime.now(ZoneInfo("Africa/Cairo")).date()
     c1, c2, c3 = st.columns(3)
     with c1:
         use_day = st.checkbox("Filter by day")
-        day_filter = st.date_input("Day", value=date.today(), key="att_day") if use_day else None
+        day_filter = st.date_input("Day", value=local_today, key="att_day") if use_day else None
     with c2:
-        year = st.number_input("Year", min_value=2020, max_value=2100, value=datetime.now().year, step=1)
-        month = st.number_input("Month", min_value=1, max_value=12, value=datetime.now().month, step=1)
+        year = st.number_input("Year", min_value=2020, max_value=2100, value=local_today.year, step=1)
+        month = st.number_input("Month", min_value=1, max_value=12, value=local_today.month, step=1)
     with c3:
         emp_choice = st.selectbox("Employee", emp_options)
 
