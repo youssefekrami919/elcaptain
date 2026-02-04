@@ -171,7 +171,7 @@ def main():
     try:
         init_db()
     except Exception as e:
-        st.error("Cannot connect to Neo4j. Check your .env and ensure Neo4j is running.")
+        st.error("Cannot connect to Neo4j. Check your Streamlit Secrets and ensure Neo4j is running.")
         st.code(str(e))
         st.stop()
 
